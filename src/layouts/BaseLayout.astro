@@ -28,7 +28,6 @@ const links = [
     <a class="skip-link" href="#main">跳到正文</a>
     <header class="site-header">
       <div class="header-inner">
-        <a class="site-brand" href={`${base}/`} aria-label="胡某人的博客，返回首页">胡某人<span class="brand-dot">.</span></a>
         <nav class="site-nav" aria-label="主导航">
           {links.map((link) => <a href={link.href} aria-current={active === link.key ? 'page' : undefined}>{link.label}</a>)}
         </nav>

@@ -27,3 +27,11 @@ test('empty sections show their own titles and empty states', async () => {
   assert.match(essays, /还没有文章/);
   assert.match(notes, /还没有文章/);
 });
+
+test('navigation has no brand link on any top-level page', async () => {
+  for (const path of ['index.html', 'essays/index.html', 'notes/index.html']) {
+    const html = await builtPage(path);
+    assert.doesNotMatch(html, /class="site-brand"/);
+    assert.match(html, /aria-label="主导航"/);
+  }
+});
