@@ -18,3 +18,12 @@ test('skips code blocks and image alt text in the excerpt', () => {
   const result = previewFromMarkdown('```js\nsecret()\n```\n\n![不应显示](/images/a.png)\n\n阅读 [这篇文章](https://example.com)。');
   assert.equal(result.excerpt, '阅读 这篇文章。');
 });
+
+test('uses a reference-style image as the card cover', () => {
+  const markdown = '正文开头。\n\n![照片][cover]\n\n[cover]: /images/a.png';
+  assert.equal(previewFromMarkdown(markdown).image, '/images/a.png');
+});
+
+test('uses a heading when an article has no paragraphs', () => {
+  assert.equal(previewFromMarkdown('## 只有小标题').excerpt, '只有小标题');
+});

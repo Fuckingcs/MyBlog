@@ -10,3 +10,10 @@ test('prefixes public image paths for a GitHub project site', () => {
   const images = tree.children[0].children.filter((node) => node.type === 'image');
   assert.deepEqual(images.map((node) => node.url), ['/MyBlog/images/a.png', 'https://example.com/b.png']);
 });
+
+test('prefixes a reference-style image definition', () => {
+  const tree = unified().use(remarkParse).parse('![照片][cover]\n\n[cover]: /images/a.png');
+  remarkPublicImages({ base: '/MyBlog' })(tree);
+  const definition = tree.children.find((node) => node.type === 'definition');
+  assert.equal(definition.url, '/MyBlog/images/a.png');
+});
