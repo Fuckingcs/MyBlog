@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import ListingPage from '../../components/ListingPage.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  const count = posts.filter((post) => post.data.category === 'essays').length;
+  const pages = Math.max(1, Math.ceil(count / 8));
+  return Array.from({ length: pages }, (_, index) => ({
+    params: { page: index === 0 ? undefined : String(index + 1) },
+    props: { posts, page: index + 1 },
+  }));
+}
+
+const { posts, page } = Astro.props;
+---
+<ListingPage category="essays" posts={posts} page={page} />

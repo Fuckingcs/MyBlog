@@ -65,7 +65,7 @@
 **Files:** Create `src/pages/posts/[slug].astro`, `.github/workflows/deploy.yml`, `README.md`, `docs/writing-posts.md`.
 
 - [ ] **Step 1: Generate article routes.** Use `getCollection('posts')` and `render(post)`; render title, date, category link, Markdown body, and return link. Style headings, lists, quotes, code, and responsive images.
-- [ ] **Step 2: Add the Pages workflow.** Trigger on pushes to `main` and manual dispatch; grant `contents: read`, `pages: write`, `id-token: write`; use `actions/checkout`, `withastro/action@v3`, and `actions/deploy-pages@v4`. Configure the `github-pages` environment.
+- [ ] **Step 2: Add the Pages workflow.** Trigger on pushes to `main` and manual dispatch; grant `contents: read`, `pages: write`, `id-token: write`; use the current documented `actions/checkout@v7`, `withastro/action@v6`, and `actions/deploy-pages@v5`. Configure the `github-pages` environment.
 - [ ] **Step 3: Write author instructions.** Show an exact Markdown example with `title`, `date`, `category`, body text and `![说明](/images/example/photo.jpg)`. Explain the automatic first-image cover, two-line excerpt, image upload under `public/images/`, GitHub web editing, and Pages setting “GitHub Actions”.
 - [ ] **Step 4: Verify.** Run `npm test`, `npm run build`, and `npm run check`; inspect home, empty lists, a fixture article with headings/code/image, and mobile layout. Remove fixtures and rebuild. Commit the finished site.
 

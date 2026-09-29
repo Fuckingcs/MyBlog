@@ -1,0 +1,40 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  active?: 'home' | 'essays' | 'notes';
+}
+
+const { title, description = '胡某人的个人博客，记录随感与学习笔记。', active } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const links = [
+  { href: `${base}/`, label: '首页', key: 'home' },
+  { href: `${base}/essays/`, label: '随感', key: 'essays' },
+  { href: `${base}/notes/`, label: '笔记', key: 'notes' },
+] as const;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <title>{title} · 胡某人的博客</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="site-brand" href={`${base}/`} aria-label="胡某人的博客，返回首页">胡某人<span class="brand-dot">.</span></a>
+        <nav class="site-nav" aria-label="主导航">
+          {links.map((link) => <a href={link.href} aria-current={active === link.key ? 'page' : undefined}>{link.label}</a>)}
+        </nav>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer"><span>© {new Date().getFullYear()} 胡某人</span><span>写一点，记一点。</span></footer>
+  </body>
+</html>

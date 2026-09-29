@@ -1,0 +1,27 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const isEssay = post.data.category === 'essays';
+const section = isEssay ? '随感' : '笔记';
+const sectionUrl = `${base}/${post.data.category}/`;
+const date = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }).format(post.data.date);
+---
+<BaseLayout title={post.data.title} description={`${post.data.title} · ${section} · 胡某人的博客`} active={post.data.category}>
+  <article class="article-shell">
+    <a class="article-back" href={sectionUrl}>← 返回{section}</a>
+    <header class="article-header">
+      <div class="article-meta"><span>{section}</span><span aria-hidden="true">·</span><time datetime={post.data.date.toISOString().slice(0, 10)}>{date}</time></div>
+      <h1>{post.data.title}</h1>
+    </header>
+    <div class="article-content"><Content /></div>
+  </article>
+</BaseLayout>

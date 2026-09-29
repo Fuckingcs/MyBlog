@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from './PostCard.astro';
+import Pagination from './Pagination.astro';
+import { pageFor } from '../lib/pagination.mjs';
+
+interface Props {
+  category: 'essays' | 'notes';
+  posts: CollectionEntry<'posts'>[];
+  page: number;
+}
+const { category, posts, page } = Astro.props;
+const { items, pageCount } = pageFor(posts, category, page);
+const typedItems = items as CollectionEntry<'posts'>[];
+const isEssay = category === 'essays';
+const title = isEssay ? '随感' : '笔记';
+const description = isEssay ? '一些生活片段和零散思考。' : '读书、学习与技术记录。';
+---
+<BaseLayout title={title} active={category} description={`${title} · 胡某人的博客`}>
+  <div class="listing-shell">
+    <header class="listing-heading">
+      <div class="eyebrow">{isEssay ? 'ESSAYS' : 'NOTES'}</div>
+      <h1>{title}</h1>
+      <p>{description}</p>
+    </header>
+    {typedItems.length === 0
+      ? <div class="empty-state"><p>这里还没有文章，之后会慢慢写。</p></div>
+      : <div class="post-grid">{typedItems.map((post) => <PostCard post={post} />)}</div>}
+    <Pagination section={category} page={page} pageCount={pageCount} />
+  </div>
+</BaseLayout>
